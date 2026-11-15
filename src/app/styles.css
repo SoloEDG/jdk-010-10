@@ -177,8 +177,17 @@ main {
 }
 .left-sidebar,
 .right-sidebar {
-  overflow: hidden;
+  overflow: visible;
   align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.right-sidebar {
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+  padding-right: 4px;
 }
 .section-title {
   display: flex;
@@ -884,4 +893,491 @@ footer button {
     left: 10px;
     top: 10px;
   }
+}
+
+/* ================= 多层薄膜 ================= */
+.device-icon.film {
+  color: #9fd6c8;
+  background: #1d302c;
+  border-color: #35564e;
+}
+.object-list button > i.film {
+  background: #6fd3bb;
+}
+.film-editor {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #2b353e;
+}
+.film-row {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+}
+.film-row label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.film-row small,
+.film-add small,
+.film-presets small,
+.budget-caption {
+  color: #748493;
+  font-size: 9px;
+  letter-spacing: 0.4px;
+}
+.film-stack {
+  border: 1px solid #2c3944;
+  border-radius: 7px;
+  padding: 8px;
+  background: #101820;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.film-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 2px;
+  font-size: 9px;
+  color: #8fa1b0;
+}
+.film-boundary i {
+  font-style: normal;
+  letter-spacing: 1px;
+}
+.film-empty {
+  text-align: center;
+  color: #657887;
+  font-size: 10px;
+  padding: 14px 0;
+}
+.film-row-card {
+  border: 1px solid #31414e;
+  border-radius: 6px;
+  background: #16202a;
+  padding: 7px 8px;
+}
+.film-row-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+}
+.film-index {
+  color: #6fd3bb;
+  font-weight: 700;
+}
+.film-kind {
+  margin-left: auto;
+  font-size: 8px;
+  color: #7c8b98;
+  border: 1px solid #34414c;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+.film-row-actions {
+  display: flex;
+  gap: 3px;
+}
+.film-row-actions button {
+  padding: 3px;
+  border-radius: 4px;
+  color: #8aa0b1;
+}
+.film-row-body {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  align-items: flex-end;
+}
+.film-row-body select {
+  flex: 1;
+  min-width: 0;
+}
+.thickness {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.thickness input {
+  width: 64px;
+  background: #1c2630;
+  border: 1px solid #34414c;
+  border-radius: 4px;
+  color: #dce4eb;
+  padding: 4px 6px;
+  font-size: 10px;
+}
+.thickness em {
+  font-style: normal;
+  font-size: 9px;
+  color: #6b7e8d;
+}
+.film-add {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.film-add select {
+  flex: 1;
+}
+.mini-button {
+  border: 1px solid #34414c;
+  border-radius: 5px;
+  padding: 6px 9px;
+  font-size: 10px;
+  color: #b6c4d0;
+  background: #1a242e;
+  white-space: nowrap;
+}
+.mini-button.primary {
+  background: #2c4427;
+  border-color: #4a6b3d;
+  color: #c2e5a3;
+}
+.custom-material {
+  margin-top: 8px;
+  border: 1px solid #31414e;
+  border-radius: 7px;
+  padding: 9px;
+  background: #141d26;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.custom-material > input {
+  background: #1c2630;
+  border: 1px solid #34414c;
+  border-radius: 4px;
+  color: #dce4eb;
+  padding: 5px 7px;
+  font-size: 10px;
+}
+.custom-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.custom-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 9px;
+  color: #748493;
+}
+.custom-grid input {
+  background: #1c2630;
+  border: 1px solid #34414c;
+  border-radius: 4px;
+  color: #dce4eb;
+  padding: 4px 6px;
+  font-size: 10px;
+  width: 100%;
+}
+.custom-actions {
+  display: flex;
+  gap: 8px;
+}
+.film-presets {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.film-presets > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.preset-chip {
+  border: 1px solid #344959;
+  background: #172734;
+  color: #92c5eb;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 9px;
+}
+
+/* ================= 能量收支 ================= */
+.energy-budget,
+.scan-panel {
+  border: 1px solid #29323c;
+  border-radius: 9px;
+  background: #131a22;
+  padding: 16px 17px;
+}
+.budget-block {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.energy-bar {
+  display: flex;
+  width: 100%;
+  height: 14px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #1c2630;
+}
+.energy-bar i {
+  display: block;
+  height: 100%;
+  transition: width 0.2s;
+}
+.rta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+.rta-cell {
+  border: 1px solid #2c3944;
+  border-radius: 6px;
+  padding: 8px 6px;
+  text-align: center;
+  background: #101820;
+}
+.rta-cell small {
+  display: block;
+  color: #7c8b98;
+  font-size: 9px;
+}
+.rta-cell strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 3px 0;
+  font-variant-numeric: tabular-nums;
+}
+.rta-cell em {
+  font-style: normal;
+  font-size: 8px;
+  color: #657887;
+}
+.rta-cell.alert {
+  border-color: #7a5a34;
+  background: #241c12;
+}
+.rta-cell.alert strong {
+  color: #f0a35e;
+}
+.layer-abs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.layer-abs-row {
+  display: grid;
+  grid-template-columns: 78px 1fr 52px;
+  align-items: center;
+  gap: 7px;
+  font-size: 9px;
+  color: #9fb2c1;
+}
+.layer-abs-row i {
+  height: 6px;
+  background: #23303a;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.layer-abs-row u {
+  display: block;
+  height: 100%;
+  background: #f0a35e;
+  text-decoration: none;
+}
+.layer-abs-row b {
+  font-weight: 500;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.budget-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+}
+.budget-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  font-size: 10px;
+  align-items: center;
+}
+.budget-row dt {
+  color: #9fb2c1;
+}
+.budget-row dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.budget-row em {
+  font-style: normal;
+  color: #6b7e8d;
+  font-size: 9px;
+  width: 46px;
+  text-align: right;
+}
+.budget-row.alert {
+  color: #f0a35e;
+}
+.budget-check {
+  font-size: 9px;
+  color: #748493;
+  line-height: 1.7;
+}
+
+/* ================= 扫描面板 ================= */
+.scan-controls {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.scan-axis-row {
+  display: flex;
+  gap: 7px;
+  align-items: flex-end;
+}
+.scan-axis-row label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 9px;
+  color: #748493;
+}
+.scan-axis-row input,
+.scan-axis-row select {
+  width: 100%;
+  background: #1c2630;
+  border: 1px solid #34414c;
+  border-radius: 4px;
+  color: #dce4eb;
+  padding: 5px 6px;
+  font-size: 10px;
+}
+.scan-buttons {
+  display: flex;
+  gap: 6px;
+}
+.scan-progress {
+  position: relative;
+  height: 18px;
+  background: #1c2630;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.scan-progress i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: #3c5a34;
+  transition: width 0.15s;
+}
+.scan-progress small {
+  position: relative;
+  z-index: 1;
+  font-size: 9px;
+  line-height: 18px;
+  padding-left: 8px;
+  color: #c2e5a3;
+}
+.scan-report {
+  margin-top: 14px;
+  border: 1px solid #2c3944;
+  border-radius: 7px;
+  padding: 10px;
+  background: #101820;
+}
+.scan-report-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  color: #9fb2c1;
+}
+.scan-report-head button {
+  margin-left: auto;
+  padding: 3px;
+  color: #7c8b98;
+}
+.stale-badge,
+.cancel-badge {
+  font-style: normal;
+  font-size: 8px;
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+.stale-badge {
+  background: #3a2f1c;
+  color: #e7c47d;
+  border: 1px solid #5a4726;
+}
+.cancel-badge {
+  background: #3a2323;
+  color: #e79090;
+  border: 1px solid #5a2c2c;
+}
+.scan-chart svg {
+  width: 100%;
+  height: 130px;
+  margin-top: 8px;
+  display: block;
+}
+.scan-legend {
+  display: flex;
+  gap: 12px;
+  font-size: 9px;
+  color: #8fa1b0;
+  margin-top: 4px;
+}
+.scan-legend i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  margin-right: 4px;
+}
+.scan-legend em {
+  margin-left: auto;
+  font-style: normal;
+  color: #657887;
+}
+.scan-heatmap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16px, 1fr));
+  gap: 1px;
+  margin-top: 8px;
+}
+.scan-heatmap .cell {
+  aspect-ratio: 1;
+  padding: 0;
+  border-radius: 2px;
+  border: none;
+}
+.scan-heatmap .cell.picked {
+  outline: 2px solid #dce4eb;
+}
+.heatmap-note {
+  grid-column: 1 / -1;
+  color: #657887;
+  font-size: 9px;
+  margin-top: 4px;
+}
+.scan-point {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 9px;
+  color: #aebfcd;
+  flex-wrap: wrap;
 }

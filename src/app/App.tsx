@@ -14,6 +14,7 @@ import { CatalogPanel, Inspector, createElement } from "../features/catalog";
 import { Bench, ObjectList, useDocument } from "../features/bench";
 import { useOptics, RayLayer, OpticsControls } from "../features/optics";
 import { useDetector, DetectorPanel } from "../features/detector";
+import { EnergyBudgetPanel, ScanPanel } from "../features/thinfilm";
 import {
   initialDocument,
   useMission,
@@ -28,6 +29,54 @@ export function App() {
   const [help, setHelp] = useState(false);
   const [notice, setNotice] = useState("");
   const selected = state.doc.items.find((e) => e.id === state.selected);
+  const selectedFilm =
+    selected?.kind === "film" ? selected : undefined;
+  const films = state.doc.items.filter((e) => e.kind === "film");
+  const activeFilm =
+    selectedFilm ?? films[0];
+
+  /**
+   * 应用扫描点：以【当前布局】重新追迹（trace 由 doc 驱动自动重算），
+   * 仅把波长/角度写回光源与入射角参考，作为一次可撤销编辑。
+   */
+  const applyScanPoint = (wavelength: number, angleDeg: number) => {
+    const sources = state.doc.items.filter((e) => e.kind === "source");
+    if (!sources.length || !activeFilm) {
+      setNotice("需要至少一个光源和一片薄膜才能应用扫描点");
+      return;
+    }
+    let next = state.doc;
+    for (const s of sources)
+      next = {
+        ...next,
+        items: next.items.map((e) =>
+          e.id === s.id
+            ? { ...e, wavelength: Math.round(wavelength) }
+            : e,
+        ),
+      };
+    // 旋转光源使其以指定入射角击中薄膜：
+    // 薄膜法线方位角 = 器件 angle − 90；光线方位角 = 法线 ± 入射角。
+    const source = sources[0];
+    const dx = activeFilm.x - source.x;
+    const dy = activeFilm.y - source.y;
+    const bearing = (Math.atan2(dy, dx) * 180) / Math.PI;
+    const normalAngle = activeFilm.angle - 90;
+    // 当前几何方位相对法线的偏角，据此把光源转到法线另一侧的目标入射角
+    const currentOffset = bearing - normalAngle;
+    const targetAngle =
+      normalAngle + (Math.sign(currentOffset || 1) * angleDeg);
+    next = {
+      ...next,
+      items: next.items.map((e) =>
+        e.id === source.id ? { ...e, angle: Math.round(targetAngle) } : e,
+      ),
+    };
+    state.replace(next);
+    setNotice(
+      `已应用扫描点 λ=${Math.round(wavelength)}nm, θ=${angleDeg.toFixed(1)}°（可撤销）`,
+    );
+  };
   return (
     <div className="app-shell">
       <header>
@@ -160,12 +209,17 @@ export function App() {
             onChoose={detector.setChosen}
             onResolution={detector.setResolution}
           />
+          <EnergyBudgetPanel film={activeFilm} trace={optics.result} />
         </div>
         <aside className="right-sidebar">
           <Inspector
             element={selected}
             onUpdate={(p) => selected && state.update(selected.id, p)}
             onRemove={() => selected && state.remove(selected.id)}
+          />
+          <ScanPanel
+            film={activeFilm}
+            onApplyPoint={applyScanPoint}
           />
           <MissionPanel
             mission={mission.mission}
@@ -182,6 +236,7 @@ export function App() {
           <i />
           光路计算已更新
           {optics.result.truncated > 0 ? " · 部分光线达到追迹上限" : ""}
+          {optics.result.budget.tir > 0 ? " · 发生全反射" : ""}
         </span>
         <span>{notice || "所有实验数据保存在你的浏览器中"}</span>
         <button onClick={() => setHelp(!help)}>
@@ -201,9 +256,14 @@ export function App() {
               4.
               选择实验任务，达到测量条件时自动完成。保存实验后，刷新可恢复器件布局。
             </p>
+            <p>
+              5. “多层薄膜”支持自定义膜层顺序、厚度与材料色散；膜内多光束
+              <b>相干合成</b>，不同光源在器件外只做功率叠加。扫描入射角与波长，
+              查看反射率、透射率、吸收与全反射能量去向；应用扫描点是一次可撤销编辑。
+            </p>
             <p className="muted">
               透镜采用近轴薄透镜模型。棱镜使用带色散的 Snell
-              折射；每条光线最多追迹 32 次。
+              折射；薄膜采用复折射率传输矩阵法，R+T+A 守恒夹紧，无源输出不超过入射功率。
             </p>
             <button className="save-button" onClick={() => setHelp(false)}>
               开始探索

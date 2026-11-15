@@ -52,6 +52,8 @@ export function DeviceGlyph({
               stroke="#80cafa"
               strokeWidth="2"
             />
+          ) : e.kind === "film" ? (
+            <FilmGlyph e={e} />
           ) : e.kind === "screen" ? (
             <>
               <line
@@ -90,6 +92,47 @@ export function DeviceGlyph({
         </g>
       )}
       <circle cx={e.x} cy={e.y} r="4" fill={color} />
+    </g>
+  );
+}
+
+/** 多层薄膜：基板 + 按膜层数量绘制的彩色叠层（仅示意，不按真实厚度比例） */
+function FilmGlyph({ e }: { e: Element }) {
+  const layers = e.layers ?? [];
+  const half = e.size / 2;
+  const palette = ["#7ec8ff", "#ffd58a", "#c3a6ff", "#8fe6c6", "#ff9d9d"];
+  const strip = Math.min(5, Math.max(1.5, 14 / Math.max(1, layers.length + 1)));
+  return (
+    <g>
+      {/* 基板 */}
+      <rect
+        x={-half}
+        y={6}
+        width={e.size}
+        height={9}
+        rx={2}
+        fill="#2c3c4c"
+        stroke="#6b8aa6"
+        strokeWidth={1.4}
+      />
+      {/* 膜层叠片，画在入射侧（基板上方） */}
+      {layers.slice(0, 12).map((l, i) => (
+        <rect
+          key={l.id}
+          x={-half}
+          y={4 - (i + 1) * strip}
+          width={e.size}
+          height={strip}
+          fill={palette[i % palette.length]}
+          opacity={0.85}
+        />
+      ))}
+      {layers.length > 12 && (
+        <text x={half - 4} y={-10} fontSize={9} fill="#9fb4c7" textAnchor="end">
+          +{layers.length - 12}
+        </text>
+      )}
+      <line x1={-half} x2={half} stroke="#d1e5f8" strokeWidth={1.2} />
     </g>
   );
 }

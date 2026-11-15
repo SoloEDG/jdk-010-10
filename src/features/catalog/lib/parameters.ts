@@ -65,5 +65,14 @@ export function parameters(e: Element): Parameter[] {
       step: 0.01,
       unit: "",
     });
+  if (e.kind === "film")
+    common.push({
+      key: "wavelength",
+      label: "设计波长",
+      min: 380,
+      max: 900,
+      step: 1,
+      unit: "nm",
+    });
   return common;
 }

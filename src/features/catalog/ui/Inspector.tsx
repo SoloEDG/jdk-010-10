@@ -1,6 +1,7 @@
 import { Trash2, SlidersHorizontal } from "lucide-react";
 import { labels, type Element } from "../../../shared/document";
 import { parameters } from "../lib/parameters";
+import { FilmEditor } from "../../thinfilm/ui/FilmEditor";
 export function Inspector({
   element,
   onUpdate,
@@ -87,6 +88,9 @@ export function Inspector({
           </div>
         </label>
       ))}
+      {element.kind === "film" && (
+        <FilmEditor element={element} onUpdate={onUpdate} />
+      )}
       <button className="delete" onClick={onRemove}>
         <Trash2 size={14} />
         移除器件
